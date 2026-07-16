@@ -1,6 +1,0 @@
-python -m tkinter
-python -m pip install pillow
-pip install tkextrafont
-pip install mysql-connector-python
-pip install bcrypt
-pip install qrcode
