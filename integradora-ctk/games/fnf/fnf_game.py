@@ -130,7 +130,7 @@ def iniciar_juego():
 
             if estado == "jugando":
                 tiempo_transcurrido = pygame.time.get_ticks() - tiempo_inicio
-                tiempo_restante = 0#max(0, duracion_sesion_ms - tiempo_transcurrido)
+                tiempo_restante = max(0, duracion_sesion_ms - tiempo_transcurrido)
 
                 if tiempo_restante == 0:
                     estado = "resumen"
