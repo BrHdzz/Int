@@ -94,11 +94,19 @@ insert into activity (xp, name, description, difficult, path_game) values (
 )
 
 insert into activity (xp, name, description, difficult, path_game) values (
-    500,
+    400,
     "FridaiNaiFunki",
     "Deberá acertar las flechas en el momento adecuado.\nSe puede utilizar tanto las flechas como las teclas WASD.\nAyuda a mejorar la reacción básica básica, cordinación ojo-mano y memoria muscular.",
     2,
     "fnf_game"
+)
+
+insert into activity (xp, name, description, difficult, path_game) values (
+    500,
+    "Ejercicio Físico (Beta)",
+    "¿Requiere de algo más serio?\nIntente realizar estos ejercicios los cuales también ayudan y son más efectivos si se practican a diario, fortalecen las muñecas y dedos.\nREQUIERE DE WEBCAM.\n\nEsta es una fase beta, puede provocar errores.",
+    1,
+    "no_game"
 )
 
 select * from passwd

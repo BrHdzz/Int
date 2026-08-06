@@ -1,10 +1,12 @@
 import tkinter as tk
+from tkinter import messagebox
 import dashboard_page
 import db
 from games.catch_money import catch_money
 from games.whack_mole import whack_mole
 from games.fnf import fnf_game
 import obj
+from games.no_game import no_game
 
 i = 0
 
@@ -97,3 +99,7 @@ def execute_game(path, app, xp, id):
             r.start()
         case "fnf_game":
             fnf_game.start(app, xp, id)
+        case "no_game":
+            r = no_game.HandsTracking()
+            messagebox.showwarning("NOTA:", "Si no puede realizar un ejercicio presione ESC para terminar.\n\nBAJAR LOS DEDOS NO ES LO MISMO QUE CERRAR EL PUÑO.\n\n\n\nSE RECOMIENDA SUBIR LAS DOS MANOS PARA EVITAR PROBLEMAS DE DETECCIÓN.")
+            r.start(app, xp, id)
