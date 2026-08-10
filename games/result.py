@@ -39,3 +39,9 @@ def results(app, misses, score, id, xp):
     back = app.buttons(fr, "Aceptar")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.pack(fill = "x", padx = 100, pady = 10)
+
+    btns = [back]
+    functions = [dashboard_page.dasboardPage]
+    args = [(app,)]
+
+    app.navegate(0, btns, functions, True, args)

@@ -4,8 +4,8 @@ from tkextrafont import Font
 from tkinter import ttk
 from PIL import Image, ImageTk, ImageSequence
 import var_config
-import xbox_controller
-import os
+import pyttsx3
+import queue
 import subprocess
 
 def windowClose():
@@ -20,59 +20,64 @@ class Window:
         self.root.iconphoto(True, tk.PhotoImage(file = "images/icon.png"))
         self.root.title(title)
         self.root.config(bg = bg)
-        self.closeButtonWindow()
+
+        self.fr_close = tk.Frame(self.root, bg = "#1a1a1a")
+        self.fr_close.pack(fill = "x")
+        self.fr_close.columnconfigure(0, weight = 1)
+        self.fr_close.columnconfigure(1, weight = 1)
+
+        self.root.bind("<F4>", lambda e: self.root.destroy())
+        self.root.bind("<F4>", lambda e: self.root.destroy())
+        
+        tk.Label(self.fr_close, text = "App del Buenestar v1.0.16_02 - buenestarvb5piz3r.onion/", bg = "#1a1a1a", fg = "#008f1f", font = ("fonts/Syne.ttf", 12)).grid(row = 0, column = 0, sticky = "w")
+
+        self.closeButtonWindow = ctk.CTkButton(self.fr_close, text = "X", corner_radius = 6, fg_color = "#2600cf", hover_color = "#14006b", text_color = "#fff", font = ("Inter", 20, "bold"), command = lambda:self.root.destroy())
+        self.closeButtonWindow.grid(row = 0, column = 1, sticky = tk.E, ipady = 2)
+
         self.mainFr = tk.Frame(self.root, bg = "#000")
         self.mainFr.pack(expand = True, fill = "both")
         self.image = {}
         self.gif = {}
         self.loop = []
-        self.controller_xbox = xbox_controller.Controller(self)
-        self.shKey()
-        self.hideKey()
 
-        self.root.bind("<Tab>", self.next)
-        self.root.bind("<Shift-Tab>", self.prev)
+        self.index_nav = 0
 
-    def next(self, evt):
-        evt.widget.tk_focusNext().focus()
-        return "break"
-    
-    def prev(self, evt):
-        evt.widget.tk_focusPrev().focus()
-        return "break"
-    
-    def closeButtonWindow(self):
-        imgCloseButton = Image.open("images/close.png")
-        imgCloseButton = imgCloseButton.resize((30, 30))
+    def play_tts(self, text):
+        subprocess.Popen([
+            "powershell",
+            "-Command",
+            f'Add-Type -AssemblyName System.Speech; '
+            f'$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; '
+            f'$speak.Speak("{text}")'
+        ])
 
-        self.imgCloseButton = ImageTk.PhotoImage(imgCloseButton)
+    def navegate(self, x, array, fun, reset, args):
+        if reset:
+            arr = 0
+            self.index_nav = 0
+            self.root.unbind("<Return>")
+            self.root.unbind("<space>")
+        else:
+            arr = len(array) - 1
 
-        fr_close = tk.Frame(self.root, bg = "#1a1a1a")
-        fr_close.pack(fill = "x")
-        fr_close.columnconfigure(0, weight = 1)
-        fr_close.columnconfigure(1, weight = 1)
-        
-        tk.Label(fr_close, text = "App del Buenestar v1.0.16_02 - buenestarvb5piz3r.onion/", bg = "#1a1a1a", fg = "#008f1f", font = ("fonts/Syne.ttf", 12)).grid(row = 0, column = 0, sticky = tk.W)
+            if 0 <= self.index_nav + x <= arr:
+                self.index_nav += x
+                array[self.index_nav].configure(fg_color = "#5d38ff")
+                array[self.index_nav - x].configure(fg_color = "#38b6ff")
+            elif self.index_nav + x < 0:
+                self.index_nav = arr
+                array[self.index_nav].configure(fg_color = "#5d38ff")
+                array[0].configure(fg_color = "#38b6ff")
+            elif self.index_nav + x > arr:
+                self.index_nav = 0
+                array[self.index_nav].configure(fg_color = "#5d38ff")
+                array[arr].configure(fg_color = "#38b6ff")
 
-        exitBtn = tk.Button(fr_close, image = self.imgCloseButton, bg = "#1a1a1a", border = 0, cursor = "hand2", activebackground = "#000", command = lambda:self.root.destroy())
-        exitBtn.bind("<FocusIn>", lambda e:exitBtn.config(bg = "#38b6ff"))
-        exitBtn.bind("<FocusOut>", lambda e:exitBtn.config(bg = "#000"))
-        exitBtn.bind("<Enter>", lambda e:exitBtn.config(bg = "#38b6ff"))
-        exitBtn.bind("<Leave>", lambda e:exitBtn.config(bg = "#000"))
-        exitBtn.grid(row = 0, column = 1, sticky = tk.E)
+            self.root.bind("<Return>", lambda e: fun[self.index_nav](*args[self.index_nav]))
+            self.root.bind("<space>", lambda e: self.play_tts(array[self.index_nav].cget("text")))
 
-        #self.exitBtn = ctk.CTkButton(fr_close, fg_color = "#7700ff", corner_radius = 10, font = ("Arial", 30), text = "X")
-        #self.exitBtn.grid(row = 0, column = 1, sticky = tk.E)
-    
-    def shKey(self):
-        path = "C:/Program Files/Common Files/miscrosoft shared/ink/TabTip.exe"
-
-        if os.path.exists(path):
-            subprocess.Popen(path)
-        #subprocess.Popen([os.path.join(os.path.dirname(os.path.abspath(__file__)), "TabTip.exe")])
-    
-    def hideKey(self):
-        os.system("taskkill /IM TabTip.exe /F >nul 2>&1")
+        self.root.bind("<Up>", lambda e: self.navegate(-1, array, fun, False, args))
+        self.root.bind("<Down>", lambda e: self.navegate(1, array, fun, False, args))
 
     def images(self, parent, image, h, w):
         key = (image, h, w)
@@ -132,9 +137,6 @@ class Window:
 
     def framesTk(self, parent):
         return tk.Frame(parent)
-
-    def tabView(self, parent):
-        return ctk.CTkTabview(parent)
     
     def labelTitle(self, parent, txt):
         return tk.Label(parent, text = txt, bg = "#000000", fg = "#5e17eb", font = (font.actual()["family"], var_config.fontSizeTitle))

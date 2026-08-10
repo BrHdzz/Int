@@ -62,3 +62,9 @@ def alterUserPage(app, attribute):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [singin, back]
+    functions = [db.alter_user_info, dashboard_page.dasboardPage]
+    args = [(app, input.get(), attribute), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

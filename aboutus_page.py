@@ -11,7 +11,7 @@ def aboutUsPage(app):
     logo = app.images(frTitle, "images/logo.png", 200, 200)
     logo.grid(padx = 10, row = 0, column = 0)
 
-    imgN = app.images(frTitle, "images/nega_logo.png", 200, 300)
+    imgN = app.images(frTitle, "images/nega_logo.png", 200, 400)
     imgN.grid(padx = 10, row = 0, column = 1)
     
     label = app.labelTitle(app.mainFr, "Nosotros")
@@ -32,3 +32,9 @@ def aboutUsPage(app):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.pack(expand = True, fill = "x", padx = 100)
+
+    btns = [back]
+    functions = [dashboard_page.dasboardPage]
+    args = [(app,)]
+
+    app.navegate(0, btns, functions, True, args)

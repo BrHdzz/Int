@@ -25,9 +25,9 @@ def comentsPage(app):
     img1 = app.images(frTitle2, "images/jijijija.png", 25, 103)
     img1.grid(padx = 10, column = 1, row = 1)
     
-    back = app.buttons(app.mainFr, "Dejar un Comentario")
-    back.configure(command = lambda:coment_page.comentsPage(app))
-    back.pack(pady = 5, fill = "x", padx = 100)
+    coment = app.buttons(app.mainFr, "Dejar un Comentario")
+    coment.configure(command = lambda:coment_page.comentsPage(app))
+    coment.pack(pady = 5, fill = "x", padx = 100)
     
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
@@ -67,3 +67,9 @@ def comentsPage(app):
     canva.bind("<Leave>", noscroll)
 
     db.showComents(frC)
+
+    btns = [coment, back]
+    functions = [coment_page.comentsPage, dashboard_page.dasboardPage]
+    args = [(app,), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

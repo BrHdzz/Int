@@ -62,3 +62,9 @@ def shDonate(app, user):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:admin_dashboard.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [back]
+    functions = [admin_dashboard.dasboardPage]
+    args = [(app,)]
+
+    app.navegate(0, btns, functions, True, args)

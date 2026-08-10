@@ -50,3 +50,18 @@ def viewUsers_adminOpt(user, app):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:admin_dashboard.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [b1, b2, b3, b4, b5, back]
+
+    functions = [
+        db.getAdv,
+        view_results_user_admin.shResults,
+        view_donation_user_admin.shDonate,
+        view_coment_user_admin.shComent,
+        db.deleteUser,
+        admin_dashboard.dasboardPage
+    ]
+
+    args = [(user), (app, user), (app, user), (app, user), (app, user), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

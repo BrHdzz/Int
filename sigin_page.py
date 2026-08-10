@@ -65,3 +65,9 @@ def signinPage(app):
     back = app.buttons(buttonFr, "Atrás")
     back.configure(command = lambda:main_page.mainPage(app))
     back.grid(row = 0, column = 1, padx = 20, sticky = "ew")
+
+    btns = [singin, back]
+    fun = [db.signin, main_page.mainPage]
+    args = [(nameInput.get(), passInput.get(), unameInput.get(), mailInput.get(), app), (app,)]
+
+    app.navegate(0, btns, fun, True, args)

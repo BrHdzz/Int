@@ -37,6 +37,11 @@ def charge(bar, app, l, method, amount):
         back.configure(command = lambda:dashboard_page.dasboardPage(app))
         back.pack(pady = 5, padx = 100, fill = "x")
 
+        btns = [back]
+        functions = [dashboard_page.dasboardPage]
+        args = [(app,)]
+    
+        app.navegate(0, btns, functions, True, args)
 
 def donePayPage(app, method, amount):
     app.deletePage(app.mainFr)

@@ -44,10 +44,16 @@ def payPage(app, method, amount):
     qrImg = app.images(app.mainFr, "images/qr.png", 250, 250)
     qrImg.pack(pady = 15)
     
-    back = app.buttons(app.mainFr, "Pagar")
-    back.configure(command = lambda:done_payment_page.donePayPage(app, method, amount))
-    back.pack(pady = 5, padx = 100, fill = "x")
+    paydelimon = app.buttons(app.mainFr, "Pagar")
+    paydelimon.configure(command = lambda:done_payment_page.donePayPage(app, method, amount))
+    paydelimon.pack(pady = 5, padx = 100, fill = "x")
     
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(width = 70, command = lambda:dashboard_page.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [paydelimon, back]
+    functions = [done_payment_page.donePayPage, dashboard_page.dasboardPage]
+    args = [(app, method, amount), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

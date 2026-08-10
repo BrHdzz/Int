@@ -56,3 +56,9 @@ def viewUsers_admin(user, app):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:admin_dashboard.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [viewR, back]
+    functions = [view_profile_user_admin_opt.viewUsers_adminOpt, admin_dashboard.dasboardPage]
+    args = [(row[2], app), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

@@ -14,6 +14,55 @@ import admin_dashboard
 import view_profile_user_admin
 import view_results_user_admin
 import obj
+import getpass
+import pymongo
+
+def initMongo(accurate, time):
+    if os.path.exists("session.json"):
+        with open("session.json") as f:
+            session = json.load(f)
+            username = session["username"]
+
+        try:
+            client = pymongo.MongoClient("localhost", 27017)
+            db = client["intmongo"]
+            collection = db["results"]
+
+            usr = collection.find_one({"user": username})
+
+            if usr is not None:
+                dt = list(usr.items())
+                collection.update_one({"user": username}, {"$set": {"avg_accurate": (accurate + float(dt[2][1])) / 2,"avg_time": (time + float(dt[4][1])) / 2}})
+            else:
+                collection.insert_one({"user": username, "init_accurate": accurate, "avg_time": time, "avg_accurate": accurate})
+        except Exception as e:
+            print(e)
+        finally:
+            client.close()
+
+def printMongo():
+    if os.path.exists("session.json"):
+        with open("session.json") as f:
+            session = json.load(f)
+            username = session["username"]
+
+        try:
+            client = pymongo.MongoClient("localhost", 27017)
+            db = client["intmongo"]
+            collection = db["results"]
+
+            usr = collection.find_one({"user": username})
+
+            if usr is not None:
+                return list(usr.items())
+            else:
+                return None
+        except Exception as e:
+            print(e)
+        finally:
+            client.close()
+    else:
+        messagebox.showerror("MongoDB", "Error al obtener los datos.")
 
 def connectSQL():
     try:
@@ -28,14 +77,14 @@ def connectSQL():
         return None
 
 def signin(name, passwd, uname, mail,app):
-    conn = connectSQL()
-
-    if conn == None:
-        return
-    
-    cur = conn.cursor()
-
     try:
+        conn = connectSQL()
+
+        if conn == None:
+            return
+
+        cur = conn.cursor()
+
         cur.execute("select username, email from user where username = %s or email = %s", (uname, mail))
         
         if not name or not passwd or not uname or not mail:
@@ -350,9 +399,9 @@ def showComents(parent):
                 fr.pack(ipady = 2, ipadx = 5, pady = 10)
 
                 if i[0] == 0:
-                    tk.Label(fr, text = f"{i[1]}", bg = "#000000", fg = "#ffffff", font = ("Inter", var_config.fontSizeText), width = obj.root.winfo_reqwidth() - 675, anchor = "w", justify = "left", wraplength = obj.root.winfo_reqwidth() - 675).pack()
+                    tk.Label(fr, text = f"{i[1]}", bg = "#000000", fg = "#ffffff", font = ("Inter", var_config.fontSizeText), width = obj.root.winfo_reqwidth() - 675, anchor = "w", justify = "left", wraplength = obj.root.winfo_reqwidth()).pack()
                 elif i[0] == 1:
-                    tk.Label(fr, text = f"{i[1]}", bg = "#000000", fg = "#555555", font = ("Inter", var_config.fontSizeText, "italic"), width = obj.root.winfo_reqwidth() - 675, anchor = "w", justify = "left", wraplength = obj.root.winfo_reqwidth() - 675).pack()
+                    tk.Label(fr, text = f"{i[1]}", bg = "#000000", fg = "#555555", font = ("Inter", var_config.fontSizeText, "italic"), width = obj.root.winfo_reqwidth() - 675, anchor = "w", justify = "left", wraplength = obj.root.winfo_reqwidth()).pack()
         else:
             tk.Label(parent, text = f"Sin resultados.", bg = "#000000", fg = "#555555", font = ("Inter", var_config.fontSizeText), width = 70, anchor = "w", justify = "left").pack()
 

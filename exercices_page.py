@@ -85,9 +85,15 @@ def exercicesPage(app):
     rg = tk.Button(frMenu, text = "▶", bg = "#2b2b2b", bd = 0, fg = "#38b6ff", activebackground = "#2b2b2b", command = lambda:ind(l, 1, app), font = ("Arial", 50), anchor = "w")
     rg.grid(column = 2, row = 0)
 
-    frButtonComents = app.buttons(app.mainFr, "Atrás")
-    frButtonComents.configure(command = lambda:dashboard_page.dasboardPage(app))
-    frButtonComents.pack(pady = 5, expand = True, fill = "x", padx = 100)
+    back = app.buttons(app.mainFr, "Atrás")
+    back.configure(command = lambda:dashboard_page.dasboardPage(app))
+    back.pack(pady = 5, expand = True, fill = "x", padx = 100)
+
+    btns = [ex, back]
+    functions = [execute_game, dashboard_page.dasboardPage]
+    args = [(row[i][4], app, row[i][0], row[i][5]), (app,)]
+
+    app.navegate(0, btns, functions, True, args)
 
 def execute_game(path, app, xp, id):
     match path:

@@ -30,14 +30,25 @@ def comentsPage(app):
     sc = app.scrollBars(fr)
     sc.pack(side = tk.RIGHT, fill = tk.Y)
 
+    args = [("", app), (app,)]
+
     txt = app.texts(fr, sc)
+    txt.bind("<KeyRelease>", lambda e: print(args[0][0] + txt.get("1.0", "end-1c")))
     txt.configure(height = 15)
     txt.pack(side = tk.TOP, fill = tk.X)
     
-    back = app.buttons(app.mainFr, "Publicar")
-    back.configure(command = lambda:db.coments(txt.get("1.0", "end-1c"), app))
-    back.pack(pady = 5, padx = 100, fill = "x")
+    send = app.buttons(app.mainFr, "Publicar")
+    send.configure(command = lambda:db.coments(txt.get("1.0", "end-1c"), app))
+    send.pack(pady = 5, padx = 100, fill = "x")
     
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:coments_page.comentsPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [send, back]
+    functions = [db.coments, coments_page.comentsPage]
+
+    app.navegate(0, btns, functions, True, args)
+
+def getTxt(txt):
+    return txt.get("1.0", "end-1c")

@@ -73,3 +73,9 @@ def psswd(app):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:admin_dashboard.dasboardPage(app))
     back.pack(pady = 5, fill = "x", padx = 100)
+
+    btns = [send, back]
+    functions = [db.insert_password, admin_dashboard.dasboardPage]
+    args = [(passw.get(), app), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

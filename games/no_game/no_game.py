@@ -1,4 +1,4 @@
-import pygame
+import db
 import random
 from pygame import mixer
 from games import result
@@ -6,7 +6,7 @@ import mediapipe as mp
 import cv2
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-import asyncio
+import time
 
 class HandsTracking:
     def __init__(self):
@@ -23,6 +23,9 @@ class HandsTracking:
         )
         
         self.hand_landmarker = vision.HandLandmarker.create_from_options(self.options)
+
+        self.time = time.time()
+        self.currentTime  = 0
 
         self.cap = cv2.VideoCapture(0)
 
@@ -59,6 +62,8 @@ class HandsTracking:
 
         if not ret:
             return
+
+        self.currentTime = time.time() - self.time
 
         self.frame = cv2.flip(self.frame, 1)
         rgb_frame = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
@@ -111,19 +116,20 @@ class HandsTracking:
             self.closeMidle_l,
             self.closeRing_l,
             self.closePinky_l,
-            self.closeHands,
-            ##################
-            self.closePinky_r,
-            self.closeMidle_l,
-            self.closePinky_l,
-            self.closeHand_l,
-            self.closeMidle_r,
-            self.closeIndex_l,
-            self.closeThumb_r,
-            self.closeThumb_l,
-            self.closeHand_r,
-            self.closeIndex_l,
-            self.closeMidle_l
+            ###################
+            #self.closeHands,
+            #self.closePinky_r,
+            #self.closeMidle_l,
+            #self.closePinky_l,
+            #self.closeHand_l,
+            #self.closeMidle_r,
+            #self.closeIndex_l,
+            #self.closeThumb_r,
+            #self.closeThumb_l,
+            #self.closeHand_r,
+            #self.closeIndex_l,
+            #self.closeMidle_l,
+            self.closeHands
         ]
 
         if self.exercise < len(self.exercises):
@@ -372,5 +378,11 @@ class HandsTracking:
         self.misses = len(self.exercises) - self.exercise
 
         cv2.destroyAllWindows()
+
+        sc = self.score / 10
+        total = sc + self.misses if sc + self.misses > 0 else 1
+        acc = 100 - ((self.misses * 100) / total) if sc + self.misses > 0 else 0.0
+
+        db.initMongo(acc, self.currentTime)
 
         result.results(app, self.misses, self.score, id, xp)

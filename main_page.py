@@ -101,6 +101,9 @@ def charge(bar, app, l):
                 os.remove("session.json")
         else:
             mainPage(app)
+
+def keyboard(btn):
+    btn.configure()
         
 def splash(app):
     app.deletePage(app.mainFr)
@@ -123,10 +126,10 @@ def splash(app):
     img1 = app.images(frTitle2, "images/jijijija.png", 25, 103)
     img1.grid(padx = 10, column = 1, row = 1)
 
-    img2 = app.images(app.mainFr, "images/nega_logo.png", 100, 100)
+    img2 = app.images(app.mainFr, "images/nega_logo.png", 200, 400)
     img2.pack(pady = 10)
     
-    label = app.labelTxt(app.mainFr, "Cargando..")
+    label = app.labelTxt(app.mainFr, "Cargando...")
     label.pack(pady = 20)
     
     label1 = app.labelTxt(app.mainFr, "")
@@ -204,6 +207,12 @@ def mainPage(app):
     login = app.buttons(buttonFr, "Iniciar sesión")
     login.configure(command = lambda:login_page.loginPage(app))
     login.grid(row = 0, column = 1, padx = 20, sticky = "ew")
+
+    btns = [singin, login]
+    functions = [sigin_page.signinPage, login_page.loginPage]
+    args = [(app,), (app,)]
+
+    app.navegate(0, btns, functions, True, args)
 
     delay()
 

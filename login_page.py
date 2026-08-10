@@ -51,3 +51,9 @@ def loginPage(app):
     back = app.buttons(buttonFr, "Atrás")
     back.configure(command = lambda:main_page.mainPage(app))
     back.grid(row = 0, column = 1, padx = 20, sticky = "ew")
+
+    btns = [singin, back]
+    fun = [db.login, main_page.mainPage]
+    args = [(userInput.get(), passInput.get(), app), (app,)]
+
+    app.navegate(0, btns, fun, True, args)

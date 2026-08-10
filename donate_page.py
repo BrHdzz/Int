@@ -52,3 +52,9 @@ def donatePage(app):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.pack(pady = 5, padx = 100, fill = "x")
+
+    btns = [xmr, btc, back]
+    functions = [validateAm, validateAm, dashboard_page.dasboardPage]
+    args = [(app, "BitCoin", input.get()), (app, "BitCoin", input.get()), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

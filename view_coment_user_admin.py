@@ -62,3 +62,9 @@ def shComent(app, user):
     back = app.buttons(app.mainFr, "Atrás")
     back.configure(command = lambda:admin_dashboard.dasboardPage(app))
     back.pack(pady = 5, fill = "x", padx = 100)
+
+    btns = [back]
+    functions = [admin_dashboard.dasboardPage]
+    args = [(app,)]
+
+    app.navegate(0, btns, functions, True, args)

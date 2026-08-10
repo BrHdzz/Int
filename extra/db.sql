@@ -73,9 +73,9 @@ create table result (
     constraint fk_activity_res foreign key (id_activity) references activity (id)
 )
 
---passwd: NEH.1b.nkg6
+--passwd: 12345678
 insert into user (name, username, passwd, date_, email, role, strike) values
-("negatron_griffin", "negatron", "$2b$12$c97mFuugNLr5ogGTZnIstuwMROqILt1bxJtNiNcemL9oOUimaJqQi", '2000-01-01', "admin@nega.com", 9999, 0)
+("negatron_griffin", "negatron", "$2b$12$.3Q5L4BTQDMMvx7IbEPkb.xOCl10Gr7TiDSDtZ5GRw4qXh/we1aGO", '2000-01-01', "admin@nega.com", 9999, 0)
 
 insert into activity (xp, name, description, difficult, path_game) values
 (
@@ -103,7 +103,7 @@ insert into activity (xp, name, description, difficult, path_game) values (
 
 insert into activity (xp, name, description, difficult, path_game) values (
     500,
-    "Ejercicio Físico (Beta)",
+    "Ejercicio Físico",
     "¿Requiere de algo más serio?\nIntente realizar estos ejercicios los cuales también ayudan y son más efectivos si se practican a diario, fortalecen las muñecas y dedos.\nREQUIERE DE WEBCAM.\n\nEsta es una fase beta, puede provocar errores.",
     1,
     "no_game"

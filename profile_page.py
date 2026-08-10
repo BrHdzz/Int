@@ -115,10 +115,16 @@ def profilePage(app, name, username, email, strike):
     singin.configure(command = lambda:db.deleteUser(app, username))
     singin.grid(row = 0, column = 0, padx = 20, sticky = "ew")
 
-    singin = app.buttons(buttonFr, "Cerrar Sesión")
-    singin.configure(command = lambda:db.logout(app))
-    singin.grid(row = 0, column = 1, padx = 20, sticky = "ew")
+    r = app.buttons(buttonFr, "Cerrar Sesión")
+    r.configure(command = lambda:db.logout(app))
+    r.grid(row = 0, column = 1, padx = 20, sticky = "ew")
 
     back = app.buttons(buttonFr, "Atrás")
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.grid(row = 0, column = 2, padx = 20, sticky = "ew")
+
+    btns = [singin, r, back]
+    functions = [db.deleteUser, db.logout, dashboard_page.dasboardPage]
+    args = [(app, username), (app,), (app,)]
+
+    app.navegate(0, btns, functions, True, args)

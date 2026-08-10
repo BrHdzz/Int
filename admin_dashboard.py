@@ -31,6 +31,12 @@ def dasboardPage(app):
     frButtonComents.configure(command = lambda:coments_admin.comentsPage(app))
     frButtonComents.pack(pady = 5, fill = "x", padx = 100)
 
-    frButtonComents = app.buttons(app.mainFr, "Contraseñas")
-    frButtonComents.configure(command = lambda:passwords.psswd(app))
-    frButtonComents.pack(pady = 5, fill = "x", padx = 100)
+    frButtonPass = app.buttons(app.mainFr, "Contraseñas")
+    frButtonPass.configure(command = lambda:passwords.psswd(app))
+    frButtonPass.pack(pady = 5, fill = "x", padx = 100)
+
+    btns = [frButtonUsers, frButtonComents, frButtonPass]
+    functions = [view_users_admin.viewUsers_admin, coments_admin.comentsPage, passwords.psswd]
+    args = [(app,), (app,), (app,)]
+
+    app.navegate(0, btns, functions, True, args)
