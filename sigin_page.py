@@ -50,6 +50,7 @@ def signinPage(app):
 
     passInput = app.inputs(frPass)
     passInput.configure(show = "*")
+    passInput.bind("<F12>", lambda e: db.signin(nameInput.get(), passInput.get(), unameInput.get(), mailInput.get(), app))
     passInput.pack(ipadx = 10, ipady = 5, fill = "x", padx = 5)
 
     buttonFr = app.frames(app.mainFr)
@@ -67,7 +68,7 @@ def signinPage(app):
     back.grid(row = 0, column = 1, padx = 20, sticky = "ew")
 
     btns = [singin, back]
-    fun = [db.signin, main_page.mainPage]
-    args = [(nameInput.get(), passInput.get(), unameInput.get(), mailInput.get(), app), (app,)]
+    fun = [print, main_page.mainPage]
+    args = [("sign-in pressed",), (app,)]
 
     app.navegate(0, btns, fun, True, args)

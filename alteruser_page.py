@@ -23,39 +23,29 @@ def alterUserPage(app, attribute):
     img1 = app.images(frTitle2, "images/jijijija.png", 25, 103)
     img1.grid(padx = 10, column = 0, row = 1, sticky = tk.E)
 
-    input = None
+    fr = app.labelFrames(app.mainFr, "")
+    fr.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
+
+    input = app.inputs(fr)
 
     if attribute == 1:
-        frName = app.labelFrames(app.mainFr, "Nombre:")
-        frName.configure(bg = "#000")
-        frName.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
-
-        input = app.inputs(frName)
-        input.pack(ipadx = 10, ipady = 5)
+        fr.configure(bg = "#000", text = "Nombre:")
     elif attribute == 2:
-        frUname = app.labelFrames(app.mainFr, "Nombre de usuario (máximo 15 caracteres):")
-        frUname.configure(bg = "#000")
-        frUname.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
-
-        input = app.inputs(frUname)
-        input.pack(ipadx = 10, ipady = 5)
+        fr.configure(bg = "#000", text = "Nombre de usuario (máximo 15 caracteres):")
+        fr.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
     elif attribute == 3:
-        frMail = app.labelFrames(app.mainFr, "Correo Electrónico:")
-        frMail.configure(bg = "#000")
-        frMail.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
-
-        input = app.inputs(frMail)
-        input.pack(ipadx = 10, ipady = 5)
+        fr.configure(bg = "#000", text = "Correo Electrónico:")
+        fr.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
     elif attribute == 4:
-        frPass = app.labelFrames(app.mainFr, "Contraseña (8 a 20 caracteres):")
-        frPass.configure(bg = "#000")
-        frPass.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
+        fr.configure(bg = "#000", text = "Contraseña (8 a 20 caracteres):")
+        fr.pack(ipady = 2, ipadx = 5, padx = 100, pady = 30)
 
-        input = app.inputs(frPass)
         input.configure(show = "*")
-        input.pack(ipadx = 10, ipady = 5)
 
-    singin = app.buttons(app.mainFr, "Guardar")
+    input.bind("<F12>", lambda e: db.alter_user_info(app, input.get(), attribute))
+    input.pack(ipadx = 10, ipady = 5)
+
+    singin = app.buttons(app.mainFr, "Guardar <F12>")
     singin.configure(command = lambda:db.alter_user_info(app, input.get(), attribute))
     singin.pack(pady = 5, padx = 100, fill = "x")
 
@@ -64,7 +54,7 @@ def alterUserPage(app, attribute):
     back.pack(pady = 5, padx = 100, fill = "x")
 
     btns = [singin, back]
-    functions = [db.alter_user_info, dashboard_page.dasboardPage]
-    args = [(app, input.get(), attribute), (app,)]
+    functions = [print, dashboard_page.dasboardPage]
+    args = [("alter pressed",), (app,)]
 
     app.navegate(0, btns, functions, True, args)

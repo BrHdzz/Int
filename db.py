@@ -29,12 +29,25 @@ def initMongo(accurate, time):
             collection = db["results"]
 
             usr = collection.find_one({"user": username})
+            dt = list(usr.items())
 
             if usr is not None:
-                dt = list(usr.items())
                 collection.update_one({"user": username}, {"$set": {"avg_accurate": (accurate + float(dt[2][1])) / 2,"avg_time": (time + float(dt[4][1])) / 2}})
             else:
-                collection.insert_one({"user": username, "init_accurate": accurate, "avg_time": time, "avg_accurate": accurate})
+                if time <= dt[4][1] and accurate == 100:
+                    collection.insert_one({"user": username, "init_accurate": accurate, "avg_time": time, "avg_accurate": accurate})
+                elif time <= dt[4][1] and accurate < 100:
+                    acc = (((accurate * float(dt[2][1])) / 100) + float(dt[2][1])) / 2
+                    collection.insert_one({"user": username, "init_accurate": acc, "avg_time": time, "avg_accurate": accurate})
+                elif time > dt[4][1] and accurate == 100:
+                    t = (time + dt[4][1]) / 2
+                    acc = accurate - (accurate * dt[4][1]) / 100
+                    collection.insert_one({"user": username, "init_accurate": acc, "avg_time": t, "avg_accurate": accurate})
+                elif time > dt[4][1] and accurate < 100:
+                    t = (time + dt[4][1]) / 2
+                    acc = (((accurate * float(dt[2][1])) / 100) + float(dt[2][1])) / 2
+                    acc_t = accurate - (accurate * dt[4][1]) / 100
+                    collection.insert_one({"user": username, "init_accurate": acc_t, "avg_time": t, "avg_accurate": accurate})
         except Exception as e:
             print(e)
         finally:
@@ -389,7 +402,7 @@ def showComents(parent):
         
         cur = conn.cursor()
 
-        cur.execute("select m.del, m.description, m.date_, u.username from message m inner join user u on (m.id_user = u.id)")
+        cur.execute("select m.del, m.description, m.date_, u.username from message m inner join user u on (m.id_user = u.id) order by date_ desc")
 
         row = cur.fetchall()
 

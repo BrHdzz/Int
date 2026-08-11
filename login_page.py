@@ -36,6 +36,7 @@ def loginPage(app):
 
     passInput = app.inputs(frPass)
     passInput.configure(show = "*")
+    passInput.bind("<F12>", lambda e: db.login(userInput.get(), passInput.get(), app))
     passInput.pack(ipadx = 10, ipady = 5, padx = 5, fill = "x")
 
     buttonFr = app.frames(app.mainFr)
@@ -44,7 +45,7 @@ def loginPage(app):
     buttonFr.columnconfigure(1, weight = 1)
     buttonFr.pack(pady = 20, padx = 80, fill = "x")
 
-    singin = app.buttons(buttonFr, "Iniciar sesión")
+    singin = app.buttons(buttonFr, "Iniciar sesión - <F12>")
     singin.configure(command = lambda:db.login(userInput.get(), passInput.get(), app))
     singin.grid(row = 0, column = 0, padx = 20, sticky = "ew")
 
@@ -53,7 +54,7 @@ def loginPage(app):
     back.grid(row = 0, column = 1, padx = 20, sticky = "ew")
 
     btns = [singin, back]
-    fun = [db.login, main_page.mainPage]
-    args = [(userInput.get(), passInput.get(), app), (app,)]
+    fun = [print, main_page.mainPage]
+    args = [("login pressed",), (app,)]
 
     app.navegate(0, btns, fun, True, args)

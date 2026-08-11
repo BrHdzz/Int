@@ -27,7 +27,6 @@ class Window:
         self.fr_close.columnconfigure(1, weight = 1)
 
         self.root.bind("<F4>", lambda e: self.root.destroy())
-        self.root.bind("<F4>", lambda e: self.root.destroy())
         
         tk.Label(self.fr_close, text = "App del Buenestar v1.0.16_02 - buenestarvb5piz3r.onion/", bg = "#1a1a1a", fg = "#008f1f", font = ("fonts/Syne.ttf", 12)).grid(row = 0, column = 0, sticky = "w")
 
@@ -60,18 +59,23 @@ class Window:
         else:
             arr = len(array) - 1
 
-            if 0 <= self.index_nav + x <= arr:
-                self.index_nav += x
+            if arr == 0:
                 array[self.index_nav].configure(fg_color = "#5d38ff")
-                array[self.index_nav - x].configure(fg_color = "#38b6ff")
-            elif self.index_nav + x < 0:
-                self.index_nav = arr
-                array[self.index_nav].configure(fg_color = "#5d38ff")
-                array[0].configure(fg_color = "#38b6ff")
-            elif self.index_nav + x > arr:
-                self.index_nav = 0
-                array[self.index_nav].configure(fg_color = "#5d38ff")
-                array[arr].configure(fg_color = "#38b6ff")
+            else:
+                if 0 <= self.index_nav + x <= arr:
+                    self.index_nav += x
+                    array[self.index_nav].configure(fg_color = "#5d38ff")
+                    array[self.index_nav - x].configure(fg_color = "#38b6ff")
+                elif self.index_nav + x < 0:
+                    self.index_nav = arr
+                    array[self.index_nav].configure(fg_color = "#5d38ff")
+                    array[0].configure(fg_color = "#38b6ff")
+                elif self.index_nav + x > arr:
+                    self.index_nav = 0
+                    array[self.index_nav].configure(fg_color = "#5d38ff")
+                    array[arr].configure(fg_color = "#38b6ff")
+
+            print(self.index_nav)
 
             self.root.bind("<Return>", lambda e: fun[self.index_nav](*args[self.index_nav]))
             self.root.bind("<space>", lambda e: self.play_tts(array[self.index_nav].cget("text")))

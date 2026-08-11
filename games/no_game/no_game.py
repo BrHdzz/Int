@@ -379,10 +379,8 @@ class HandsTracking:
 
         cv2.destroyAllWindows()
 
-        sc = self.score / 10
-        total = sc + self.misses if sc + self.misses > 0 else 1
-        acc = 100 - ((self.misses * 100) / total) if sc + self.misses > 0 else 0.0
+        acc = 100 - ((self.misses * 100) / len(self.exercises))
 
-        db.initMongo(acc, self.currentTime)
+        db.initMongo(acc, self.currentTime if self.currentTime <= 180 else 180)
 
         result.results(app, self.misses, self.score, id, xp)

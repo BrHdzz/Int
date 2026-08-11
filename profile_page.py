@@ -123,8 +123,8 @@ def profilePage(app, name, username, email, strike):
     back.configure(command = lambda:dashboard_page.dasboardPage(app))
     back.grid(row = 0, column = 2, padx = 20, sticky = "ew")
 
-    btns = [singin, r, back]
-    functions = [db.deleteUser, db.logout, dashboard_page.dasboardPage]
-    args = [(app, username), (app,), (app,)]
+    btns = [btnN, btnU, btnM, btnP, singin, r, back]
+    functions = [alteruser_page.alterUserPage, alteruser_page.alterUserPage, alteruser_page.alterUserPage, alteruser_page.alterUserPage, db.deleteUser, db.logout, dashboard_page.dasboardPage]
+    args = [(app, 1), (app, 2), (app, 3), (app, 4), (app, username), (app,), (app,)]
 
     app.navegate(0, btns, functions, True, args)

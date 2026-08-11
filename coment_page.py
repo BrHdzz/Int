@@ -22,6 +22,10 @@ def comentsPage(app):
 
     img1 = app.images(frTitle2, "images/jijijija.png", 25, 103)
     img1.grid(padx = 10, column = 1, row = 1)
+    
+    l = app.labelTxt(app.mainFr, "Cuenténos su experiencia con el uso de la app.")
+    l.configure(bg = "#000")
+    l.pack(pady = 5)
 
     fr = app.frames(app.mainFr)
     fr.configure(fg_color = "#000")
@@ -30,14 +34,12 @@ def comentsPage(app):
     sc = app.scrollBars(fr)
     sc.pack(side = tk.RIGHT, fill = tk.Y)
 
-    args = [("", app), (app,)]
-
     txt = app.texts(fr, sc)
-    txt.bind("<KeyRelease>", lambda e: print(args[0][0] + txt.get("1.0", "end-1c")))
-    txt.configure(height = 15)
+    txt.bind("<F12>", lambda e: db.coments(txt.get("1.0", "end-1c"), app))
+    txt.configure(height = 10)
     txt.pack(side = tk.TOP, fill = tk.X)
     
-    send = app.buttons(app.mainFr, "Publicar")
+    send = app.buttons(app.mainFr, "Publicar - <F12>")
     send.configure(command = lambda:db.coments(txt.get("1.0", "end-1c"), app))
     send.pack(pady = 5, padx = 100, fill = "x")
     
@@ -46,7 +48,8 @@ def comentsPage(app):
     back.pack(pady = 5, padx = 100, fill = "x")
 
     btns = [send, back]
-    functions = [db.coments, coments_page.comentsPage]
+    args = [("sent pressed",), (app,)]
+    functions = [print, coments_page.comentsPage]
 
     app.navegate(0, btns, functions, True, args)
 
